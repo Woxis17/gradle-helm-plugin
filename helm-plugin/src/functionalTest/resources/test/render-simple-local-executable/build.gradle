@@ -1,0 +1,18 @@
+plugins {
+    id 'io.github.build-extensions-oss.helm' version '0.0.1'
+}
+
+// this version will be propagated to the chart itself
+version = '1.2.3'
+
+helm {
+    charts {
+        main {
+
+        }
+    }
+    // in this particular example we don't download the helm client - instead we will use for some supplied with OS
+    downloadClient {
+        enabled = false
+    }
+}
