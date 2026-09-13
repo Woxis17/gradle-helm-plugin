@@ -24,6 +24,6 @@ helmExtension.executable.set(extractClient.flatMap { it.executable }.map { it.as
 
 tasks.named('helmRender') {
     doLast {
-        helmExtension.execHelm('help')
+        helmExtension.execHelm('help', null, null)
     }
 }
