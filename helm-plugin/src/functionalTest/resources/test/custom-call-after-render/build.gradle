@@ -1,0 +1,29 @@
+plugins {
+    id 'io.github.build-extensions-oss.helm' version '0.0.1'
+}
+
+// this version will be propagated to the chart itself
+version = '1.2.3'
+
+helm {
+    charts {
+        main {
+
+        }
+    }
+    downloadClient {
+        enabled = true
+        // it is controlled by helm.client.download.version=3.4.1
+        // version = '3.21.4'
+    }
+}
+
+def helmExtension = extensions.getByName('helm')
+def extractClient = tasks.named("helmExtractClient_${helmExtension.downloadClient.version.get()}")
+helmExtension.executable.set(extractClient.flatMap { it.executable }.map { it.asFile.absolutePath })
+
+tasks.named('helmRender') {
+    doLast {
+        helmExtension.execHelm('help')
+    }
+}
