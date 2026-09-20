@@ -18,7 +18,7 @@ import org.gradle.api.specs.Spec
 import org.gradle.work.DisableCachingByDefault
 
 // create lambda here to avoid leaking `this` in `outputs.upToDateWhen { false }`
-val alwaysReturnsFalse: Spec<Task> = { false }
+private val alwaysReturnsFalse: Spec<Task> = { false }
 
 /**
  * Check the status for a release. Corresponds to the `helm status` CLI command.
