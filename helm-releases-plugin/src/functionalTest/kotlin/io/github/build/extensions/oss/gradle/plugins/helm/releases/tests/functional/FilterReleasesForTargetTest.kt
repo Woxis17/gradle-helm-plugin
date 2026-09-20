@@ -28,10 +28,13 @@ internal class FilterReleasesForTargetTest {
     }
 
     @ParameterizedTest
+    // we run dry-run, therefore no need to permutate across helm versions
     @MethodSource("io.github.build.extensions.oss.gradle.plugins.helm.plugin.test.utils.DefaultGradleRunnerParameters#getDefaultParameterSetWithoutHelmVersion")
     fun shouldInstallOnlyReleasesSelectedByTarget(parameters: DefaultGradleRunnerParameters) {
+        // Stage 1. We try installing application - and check that the database wasn't selected
+
         // Gradle resolves the complete task graph, but does not execute Helm or contact Kubernetes.
-        val result = GradleRunnerProvider.createRunner(
+        val result1 = GradleRunnerProvider.createRunner(
             parameters = parameters,
             projectDir = testProjectDir,
             // IMPORTANT. The goal is to install to production
@@ -39,9 +42,20 @@ internal class FilterReleasesForTargetTest {
         ).build()
 
         // so, the production installation had been scheduled
-        result.output shouldContain ":helmInstallApplicationToProduction SKIPPED"
+        result1.output shouldContain ":helmInstallApplicationToProduction SKIPPED"
         // database installation wasn't even considered
-        result.output shouldNotContain ":helmInstallDatabaseToProduction"
-        result.output shouldContain ":helmInstallToProduction SKIPPED"
+        result1.output shouldNotContain ":helmInstallDatabaseToProduction"
+        result1.output shouldContain ":helmInstallToProduction SKIPPED"
+
+        // Stage 2. We try installing database - and check that the application wasn't selected
+        val result2 = GradleRunnerProvider.createRunner(
+            parameters = parameters,
+            projectDir = testProjectDir,
+            arguments = listOf("helmInstallToDatabase", "--dry-run", "--stacktrace"),
+        ).build()
+
+        result2.output shouldContain ":helmInstallDatabaseToDatabase SKIPPED"
+        result2.output shouldNotContain ":helmInstallApplicationToDatabase"
+        result2.output shouldContain ":helmInstallToDatabase SKIPPED"
     }
 }

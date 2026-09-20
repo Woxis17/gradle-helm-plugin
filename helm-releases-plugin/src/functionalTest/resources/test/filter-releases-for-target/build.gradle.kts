@@ -18,5 +18,8 @@ helm {
         create("production") {
             selectTags = "application"
         }
+        create("database") {
+            selectTags = "database"
+        }
     }
 }
