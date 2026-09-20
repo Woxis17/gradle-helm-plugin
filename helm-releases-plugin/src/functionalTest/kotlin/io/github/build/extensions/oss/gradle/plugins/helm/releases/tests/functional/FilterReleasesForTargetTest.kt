@@ -16,7 +16,12 @@ internal data class FilterReleasesForTargetTestParameters(
     val gradleParameters: DefaultGradleRunnerParameters,
     val productionOnlyCommandLineArgs: List<String>,
     val databaseOnlyCommandLineArgs: List<String>,
-)
+) {
+    // custom toString to avoid issued with project unpack
+    override fun toString(): String {
+        return "$gradleParameters-$productionOnlyCommandLineArgs-$databaseOnlyCommandLineArgs"
+    }
+}
 
 /**
  * The test below checks we try to install helm chart according to release tags selected.
