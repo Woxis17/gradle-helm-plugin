@@ -22,8 +22,10 @@ import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmI
 import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmValueOptionsApplier
 import build.extensions.oss.gradle.pluginutils.mapProperty
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmInstallationCommandTask :
     AbstractHelmServerOperationCommandTask(),
     ConfigurableHelmInstallFromRepositoryOptions,
