@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - "**"      # run on PRs targeting ANY branch (assuming we check the Gradle wrapper first)
+  # autostart build when added into the merging queue
+  merge_group:
   workflow_dispatch:
 
 permissions:
@@ -78,7 +80,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: ["17", "21"]
+        java: ["17", "21", "25"]
 
     steps:
       - name: Checkout
@@ -173,7 +175,7 @@ jobs:
 
       # see https://app.codecov.io/github/build-extensions-oss
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           files: ./build/reports/kover/report.xml
           verbose: true
