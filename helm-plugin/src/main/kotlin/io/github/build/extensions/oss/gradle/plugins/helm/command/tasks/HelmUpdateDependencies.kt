@@ -9,6 +9,9 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
@@ -17,6 +20,7 @@ import build.extensions.oss.gradle.pluginutils.property
  *
  * Corresponds to the `helm dependency update` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmUpdateDependencies : AbstractHelmDependenciesTask() {
 
     /**
@@ -31,6 +35,9 @@ abstract class HelmUpdateDependencies : AbstractHelmDependenciesTask() {
 
     @get:[InputFile Optional]
     final override val dependencyDescriptorFile: Provider<RegularFile>
+        // let's consider value files are defined in the same repository - and not in the shared file at the computer
+        // Alternatively we will have a cache miss (which is correct)
+        @PathSensitive(PathSensitivity.RELATIVE)
         get() = super.dependencyDescriptorFile
 
 

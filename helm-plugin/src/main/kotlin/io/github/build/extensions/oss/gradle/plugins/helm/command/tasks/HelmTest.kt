@@ -8,12 +8,14 @@ import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.booleanProviderFromProjectProperty
 import build.extensions.oss.gradle.pluginutils.property
 import build.extensions.oss.gradle.pluginutils.toSimpleString
+import org.gradle.work.DisableCachingByDefault
 import java.time.Duration
 
 
 /**
  * Runs the tests for a release. Corresponds to the `helm test` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmTest : AbstractHelmServerCommandTask() {
 
     /**

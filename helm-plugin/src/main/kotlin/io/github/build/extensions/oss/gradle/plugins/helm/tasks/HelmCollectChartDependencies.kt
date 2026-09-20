@@ -7,10 +7,13 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
-
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 open class HelmCollectChartDependencies : DefaultTask() {
 
     @get:Inject
@@ -24,6 +27,9 @@ open class HelmCollectChartDependencies : DefaultTask() {
 
 
     @get:InputFiles
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     var dependencies: FileCollection =
         project.layout.files()
 

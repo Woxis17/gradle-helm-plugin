@@ -15,6 +15,7 @@ import build.extensions.oss.gradle.pluginutils.withDefault
 import org.gradle.api.Action
 import org.gradle.api.Task
 import org.gradle.api.specs.Spec
+import org.gradle.work.DisableCachingByDefault
 
 // create lambda here to avoid leaking `this` in `outputs.upToDateWhen { false }`
 val alwaysReturnsFalse: Spec<Task> = { false }
@@ -22,6 +23,7 @@ val alwaysReturnsFalse: Spec<Task> = { false }
 /**
  * Check the status for a release. Corresponds to the `helm status` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmStatus : AbstractHelmServerCommandTask() {
 
     init {

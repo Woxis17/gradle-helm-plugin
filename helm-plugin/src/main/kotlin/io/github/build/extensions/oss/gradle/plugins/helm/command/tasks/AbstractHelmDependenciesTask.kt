@@ -82,9 +82,6 @@ abstract class AbstractHelmDependenciesTask : AbstractHelmCommandTask() {
      * Chart API version and only if it is present.
      */
     @get:Internal
-    // let's consider value files are defined in the same repository - and not in the shared file at the computer
-    // Alternatively we will have a cache miss (which is correct)
-    @PathSensitive(PathSensitivity.RELATIVE)
     internal open val lockFile: Provider<RegularFile> =
         chartDir.file(lockFileName)
 
