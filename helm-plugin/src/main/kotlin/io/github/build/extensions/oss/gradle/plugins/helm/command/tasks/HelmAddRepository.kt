@@ -9,6 +9,9 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 import org.yaml.snakeyaml.Yaml
 import java.net.URI
 
@@ -16,6 +19,7 @@ import java.net.URI
 /**
  * Registers a known repository with Helm. Corresponds to the `helm repo add` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmAddRepository : AbstractHelmCommandTask() {
 
     /**
@@ -40,6 +44,9 @@ abstract class HelmAddRepository : AbstractHelmCommandTask() {
      * Corresponds to the `--ca-file` CLI parameter.
      */
     @get:[InputFile Optional]
+    // let's consider k8s configuration is defined in the same repository - and not in the shared file at the computer.
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val caFile: RegularFileProperty =
         project.objects.fileProperty()
 
@@ -70,6 +77,9 @@ abstract class HelmAddRepository : AbstractHelmCommandTask() {
      * Corresponds to the `--cert-file` CLI parameter.
      */
     @get:[InputFile Optional]
+    // let's consider k8s configuration is defined in the same repository - and not in the shared file at the computer.
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val certificateFile: RegularFileProperty =
         project.objects.fileProperty()
 
@@ -80,6 +90,9 @@ abstract class HelmAddRepository : AbstractHelmCommandTask() {
      * Corresponds to the `--key-file` CLI parameter.
      */
     @get:[InputFile Optional]
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val keyFile: RegularFileProperty =
         project.objects.fileProperty()
 

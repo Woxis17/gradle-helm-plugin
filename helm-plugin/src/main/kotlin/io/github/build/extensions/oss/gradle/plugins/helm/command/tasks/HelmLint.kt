@@ -20,12 +20,14 @@ import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.ifPresent
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Runs a series of tests to verify that a chart is well-formed.
  * Corresponds to the `helm lint` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmLint : AbstractHelmCommandTask(), ConfigurableHelmValueOptions {
 
     /**

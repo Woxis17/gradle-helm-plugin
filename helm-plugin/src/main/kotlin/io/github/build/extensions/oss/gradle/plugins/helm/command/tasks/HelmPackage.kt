@@ -13,6 +13,7 @@ import org.gradle.api.tasks.TaskAction
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptor
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptorYaml
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
@@ -22,6 +23,7 @@ import build.extensions.oss.gradle.pluginutils.property
  * specified explicitly using the [chartName] and [chartVersion] properties, the task will parse the `Chart.yaml`
  * file and extract the missing information from there.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmPackage : AbstractHelmCommandTask() {
 
     internal companion object {

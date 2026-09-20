@@ -18,11 +18,15 @@ import build.extensions.oss.gradle.pluginutils.property
 import build.extensions.oss.gradle.pluginutils.providerFromProjectProperty
 import javax.inject.Inject
 import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Extracts a Helm client executable package.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 open class HelmExtractClient : DefaultTask() {
 
     init {
@@ -52,6 +56,9 @@ open class HelmExtractClient : DefaultTask() {
      * The input archive file that was downloaded.
      */
     @get:InputFile
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val archiveFile: RegularFileProperty =
         project.objects.fileProperty()
 

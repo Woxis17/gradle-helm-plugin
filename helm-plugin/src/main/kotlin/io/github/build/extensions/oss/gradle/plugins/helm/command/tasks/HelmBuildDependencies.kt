@@ -5,6 +5,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
@@ -13,6 +14,7 @@ import org.gradle.api.tasks.TaskAction
  *
  * Corresponds to the `helm dependency build` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmBuildDependencies : AbstractHelmDependenciesTask() {
 
     @get:[InputFile Optional]

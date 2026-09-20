@@ -11,6 +11,8 @@ import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptor
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptorYaml
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartModelDependencies
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartRequirementsYaml
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.work.DisableCachingByDefault
 
 @DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
@@ -80,6 +82,9 @@ abstract class AbstractHelmDependenciesTask : AbstractHelmCommandTask() {
      * Chart API version and only if it is present.
      */
     @get:Internal
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     internal open val lockFile: Provider<RegularFile> =
         chartDir.file(lockFileName)
 
