@@ -11,9 +11,11 @@ import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptor
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartDescriptorYaml
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartModelDependencies
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ChartRequirementsYaml
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
-
-@Suppress("LeakingThis")
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmDependenciesTask : AbstractHelmCommandTask() {
 
     /**

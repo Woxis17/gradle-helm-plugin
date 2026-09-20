@@ -21,6 +21,9 @@ import org.gradle.kotlin.dsl.putFrom
 import build.extensions.oss.gradle.pluginutils.io.expand
 import build.extensions.oss.gradle.pluginutils.property
 import build.extensions.oss.gradle.pluginutils.versionProvider
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
 
@@ -35,6 +38,7 @@ import javax.inject.Inject
  * - copy the chart source files into an intermediate directory that has the same name as
  *   the chart, as is required by the `helm package` command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 open class HelmFilterSources : DefaultTask() {
 
     init {
@@ -80,6 +84,9 @@ open class HelmFilterSources : DefaultTask() {
      * The directory that contains the chart sources.
      */
     @get:InputDirectory
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val sourceDir: DirectoryProperty =
         project.objects.directoryProperty()
 

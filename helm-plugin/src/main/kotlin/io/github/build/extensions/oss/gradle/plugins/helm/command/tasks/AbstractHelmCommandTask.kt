@@ -18,6 +18,7 @@ import io.github.build.extensions.oss.gradle.plugins.helm.command.ConfigurableGl
 import io.github.build.extensions.oss.gradle.plugins.helm.command.HelmExecProviderSupport
 import io.github.build.extensions.oss.gradle.plugins.helm.command.HelmExecSpec
 import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.GlobalHelmOptionsApplier
+import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
 
@@ -29,6 +30,7 @@ import javax.inject.Inject
  * the extension is part of the project model, and storing it in task state makes the task unserializable
  * for the configuration cache.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmCommandTask
     : DefaultTask(), ConfigurableGlobalHelmOptions {
 

@@ -20,18 +20,25 @@ import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.ifPresent
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Runs a series of tests to verify that a chart is well-formed.
  * Corresponds to the `helm lint` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmLint : AbstractHelmCommandTask(), ConfigurableHelmValueOptions {
 
     /**
      * The directory that contains the sources for the Helm chart.
      */
     @get:[InputDirectory SkipWhenEmpty]
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val chartDir: DirectoryProperty =
         project.objects.directoryProperty()
 
@@ -77,6 +84,9 @@ abstract class HelmLint : AbstractHelmCommandTask(), ConfigurableHelmValueOption
      * Not to be confused with [fileValues], which contains entries whose values are the contents of files.
      */
     @get:InputFiles
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract override val valueFiles: ConfigurableFileCollection
 
 

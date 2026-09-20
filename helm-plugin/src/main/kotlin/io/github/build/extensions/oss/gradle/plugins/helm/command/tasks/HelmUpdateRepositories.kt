@@ -10,6 +10,7 @@ import org.gradle.api.tasks.TaskAction
 import io.github.build.extensions.oss.gradle.plugins.helm.util.withLockFile
 import build.extensions.oss.gradle.pluginutils.listProperty
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 import java.time.Duration
 
 
@@ -18,6 +19,7 @@ import java.time.Duration
  *
  * Corresponds to the `helm repo update` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmUpdateRepositories : AbstractHelmCommandTask() {
 
     /**

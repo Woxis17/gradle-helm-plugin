@@ -12,11 +12,13 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.listProperty
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Renders chart templates locally.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmTemplate : AbstractHelmInstallationCommandTask() {
 
     @get:[Input Optional]

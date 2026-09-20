@@ -4,11 +4,13 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Upgrades a release on the cluster. Corresponds to the `helm upgrade` CLI command.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmUpgrade : AbstractHelmInstallationCommandTask() {
 
     /**

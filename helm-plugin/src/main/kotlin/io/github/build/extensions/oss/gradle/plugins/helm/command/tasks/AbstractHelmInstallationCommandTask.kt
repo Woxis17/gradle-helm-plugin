@@ -22,8 +22,12 @@ import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmI
 import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmValueOptionsApplier
 import build.extensions.oss.gradle.pluginutils.mapProperty
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmInstallationCommandTask :
     AbstractHelmServerOperationCommandTask(),
     ConfigurableHelmInstallFromRepositoryOptions,
@@ -205,6 +209,9 @@ abstract class AbstractHelmInstallationCommandTask :
      * Not to be confused with [fileValues], which contains entries whose values are the contents of files.
      */
     @get:InputFiles
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     final override val valueFiles: ConfigurableFileCollection = project.objects.fileCollection()
 
 

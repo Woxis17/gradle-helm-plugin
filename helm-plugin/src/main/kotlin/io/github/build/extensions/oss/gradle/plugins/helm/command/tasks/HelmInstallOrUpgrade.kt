@@ -6,6 +6,7 @@ import org.gradle.api.tasks.TaskAction
 import io.github.build.extensions.oss.gradle.plugins.helm.command.helmCommandSupport
 import io.github.build.extensions.oss.gradle.plugins.helm.model.ReleaseStatus
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
@@ -14,6 +15,7 @@ import build.extensions.oss.gradle.pluginutils.property
  * This task will call `helm upgrade --install` by default, or `helm install --replace` if the release does
  * not exist or has previously failed.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmInstallOrUpgrade : AbstractHelmInstallationCommandTask() {
 
     /**

@@ -16,6 +16,7 @@ import io.github.build.extensions.oss.gradle.plugins.helm.util.formatDataSize
 import build.extensions.oss.gradle.pluginutils.SystemUtils
 import build.extensions.oss.gradle.pluginutils.property
 import build.extensions.oss.gradle.pluginutils.providerFromProjectProperty
+import org.gradle.work.DisableCachingByDefault
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.IOException
@@ -25,6 +26,7 @@ import java.net.URI
 /**
  * Downloads a Helm client package from the official Helm releases website.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class HelmDownloadClientPackage : DefaultTask() {
 
     companion object {

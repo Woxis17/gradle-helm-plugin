@@ -54,10 +54,13 @@ jobs:
         # All important internal tasks a linked to build.
         # Add more memory for Gradle and compiler. See also https://github.com/build-extensions-oss/gradle-helm-plugin/issues/26
         # Keep Kotlin compiler running as a daemon - otherwise the configuration will be complex
-        # We just publish plugin here - deep tests will be executed at later stages
+        # The main goal is to publish plugin here - deep tests will be executed at later stages
+        # Additionally - let's run cheap tests to fail fast. They will be repeated later (just in case)
         run: |
           ./gradlew \
           publishAllPublicationsToLocalRepoRepository \
+          validatePlugins \
+          apiCheck \
           "-Porg.gradle.jvmargs=-Xmx1G -XX:MaxMetaspaceSize=2G" \
           --stacktrace \
           --info \

@@ -10,11 +10,15 @@ import io.github.build.extensions.oss.gradle.plugins.helm.command.ConfigurableHe
 import io.github.build.extensions.oss.gradle.plugins.helm.command.HelmExecProviderSupport
 import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmServerOptionsApplier
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Base class for tasks representing Helm CLI commands that communicate with the remote Kubernetes cluster.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmServerCommandTask : AbstractHelmCommandTask(), ConfigurableHelmServerOptions {
 
     /**
@@ -24,6 +28,9 @@ abstract class AbstractHelmServerCommandTask : AbstractHelmCommandTask(), Config
      * Helm invocation.
      */
     @get:[InputFile Optional]
+    // let's consider k8s configuration is defined in the same repository - and not in the shared file at the computer.
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     final override val kubeConfig: RegularFileProperty =
         project.objects.fileProperty()
 

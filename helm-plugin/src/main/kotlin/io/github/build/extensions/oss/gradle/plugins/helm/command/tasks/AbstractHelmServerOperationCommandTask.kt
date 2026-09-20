@@ -6,6 +6,7 @@ import io.github.build.extensions.oss.gradle.plugins.helm.command.ConfigurableHe
 import io.github.build.extensions.oss.gradle.plugins.helm.command.HelmExecProviderSupport
 import io.github.build.extensions.oss.gradle.plugins.helm.command.internal.HelmServerOperationOptionsApplier
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.work.DisableCachingByDefault
 import java.time.Duration
 
 
@@ -13,6 +14,7 @@ import java.time.Duration
  * Base class for tasks that call a Helm CLI command representing an operation on the server
  * (`install`, `uninstall`, `upgrade`).
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 abstract class AbstractHelmServerOperationCommandTask :
     AbstractHelmServerCommandTask(), ConfigurableHelmServerOperationOptions {
 
