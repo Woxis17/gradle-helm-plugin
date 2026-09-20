@@ -2,8 +2,11 @@ package io.github.build.extensions.oss.gradle.plugins.helm.releases.tests.functi
 
 import io.github.build.extensions.oss.gradle.plugins.helm.plugin.test.utils.DefaultGradleRunnerParameters
 import io.github.build.extensions.oss.gradle.plugins.helm.plugin.test.utils.GradleRunnerProvider
+import io.kotest.matchers.should
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
+import io.kotest.matchers.string.shouldStartWith
+import io.kotest.matchers.string.startWith
 import java.io.File
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
@@ -41,11 +44,17 @@ internal class FilterReleasesForTargetTest {
             arguments = listOf("helmInstallToProduction", "--dry-run", "--stacktrace"),
         ).build()
 
-        // so, the production installation had been scheduled
-        result1.output shouldContain ":helmInstallApplicationToProduction SKIPPED"
-        // database installation wasn't even considered
-        result1.output shouldNotContain ":helmInstallDatabaseToProduction"
-        result1.output shouldContain ":helmInstallToProduction SKIPPED"
+        // so, the production installation had been scheduled - no database tasks
+        result1.output should startWith(
+            """
+                :helmAddRepositories SKIPPED
+                :helmUpdateRepositories SKIPPED
+                :helmInstallApplicationToProduction SKIPPED
+                :helmInstallToProduction SKIPPED
+
+                BUILD SUCCESSFUL
+            """.trimIndent()
+        )
 
         // Stage 2. We try installing database - and check that the application wasn't selected
         val result2 = GradleRunnerProvider.createRunner(
@@ -54,8 +63,16 @@ internal class FilterReleasesForTargetTest {
             arguments = listOf("helmInstallToDatabase", "--dry-run", "--stacktrace"),
         ).build()
 
-        result2.output shouldContain ":helmInstallDatabaseToDatabase SKIPPED"
-        result2.output shouldNotContain ":helmInstallApplicationToDatabase"
-        result2.output shouldContain ":helmInstallToDatabase SKIPPED"
+        // only database tasks are here - no production
+        result2.output should startWith(
+            """
+            :helmAddRepositories SKIPPED
+            :helmUpdateRepositories SKIPPED
+            :helmInstallDatabaseToDatabase SKIPPED
+            :helmInstallToDatabase SKIPPED
+
+            BUILD SUCCESSFUL
+        """.trimIndent()
+        )
     }
 }
