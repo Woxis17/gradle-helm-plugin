@@ -16,11 +16,15 @@ import io.github.build.extensions.oss.gradle.plugins.helm.publishing.dsl.HelmPub
 import io.github.build.extensions.oss.gradle.plugins.helm.publishing.dsl.HelmPublishingRepositoryInternal
 import io.github.build.extensions.oss.gradle.plugins.helm.publishing.publishers.PublisherParams
 import build.extensions.oss.gradle.pluginutils.property
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 
 /**
  * Publishes a packaged helm chart to a repository.
  */
+@DisableCachingByDefault(because = "See https://github.com/build-extensions-oss/gradle-helm-plugin/issues/208")
 open class HelmPublishChart
 @Inject constructor(
     private val workerExecutor: WorkerExecutor
@@ -50,6 +54,9 @@ open class HelmPublishChart
      * The chart package file to be published.
      */
     @get:InputFile
+    // let's consider value files are defined in the same repository - and not in the shared file at the computer
+    // Alternatively we will have a cache miss (which is correct)
+    @PathSensitive(PathSensitivity.RELATIVE)
     val chartFile: RegularFileProperty =
         project.objects.fileProperty()
 
