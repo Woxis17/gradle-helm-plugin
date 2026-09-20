@@ -12,7 +12,12 @@ import build.extensions.oss.gradle.pluginutils.fileProviderFromProjectProperty
 import build.extensions.oss.gradle.pluginutils.property
 import build.extensions.oss.gradle.pluginutils.providerFromProjectProperty
 import build.extensions.oss.gradle.pluginutils.withDefault
+import org.gradle.api.Action
+import org.gradle.api.Task
+import org.gradle.api.specs.Spec
 
+// create lambda here to avoid leaking `this` in `outputs.upToDateWhen { false }`
+val alwaysReturnsFalse: Spec<Task> = { false }
 
 /**
  * Check the status for a release. Corresponds to the `helm status` CLI command.
@@ -22,8 +27,7 @@ abstract class HelmStatus : AbstractHelmServerCommandTask() {
     init {
         // A status check queries the live cluster, therefor it should never be "up-to-date"
         // and should always be executed on invocation.
-        @Suppress("LeakingThis")
-        outputs.upToDateWhen { false }
+        outputs.upToDateWhen(alwaysReturnsFalse)
     }
 
     /**
