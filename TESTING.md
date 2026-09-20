@@ -3,7 +3,7 @@
     * They use Gradle Test Kit to run the plugin in various
       Gradle versions. New feature verification must be done through them (e.g. via integrational tests), especially if
       Gradle methods and interfaces are involved.
-    * Use `HelmSimpleRenderTest.kt` as an integration test example. It checks multiple helm versions and run on multiple
+    * Use `HelmSimpleRenderTest.kt` or `OnlyHelmPublishPluginTest.kt` as integration tests examples. It checks multiple helm versions and run on multiple
       Gradle versions. GitHub actions will run them on different operating systems and on different Java versions.
 * Unit tests are in `test` Gradle configuration. Rules:
     * Tests must use JUnit to start them. Do not use either Kotest or Spec as an engine. Why: it is harder to run these
