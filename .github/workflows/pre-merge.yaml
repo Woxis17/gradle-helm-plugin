@@ -129,6 +129,10 @@ jobs:
           path: |
             helm-plugin/build/reports/tests/functionalTest/
             helm-plugin/build/test-results/functionalTest/*.xml
+            helm-releases-plugin/build/reports/tests/functionalTest/
+            helm-releases-plugin/build/test-results/functionalTest/*.xml
+            helm-publish-plugin/build/reports/tests/functionalTest/
+            helm-publish-plugin/build/test-results/functionalTest/*.xml
             build/reports/problems/
 
       - name: Upload Kover execution data
