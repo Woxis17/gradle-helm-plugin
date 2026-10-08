@@ -1,6 +1,11 @@
 package io.github.build.extensions.oss.gradle.plugins.helm.command.internal
 
+import io.github.build.extensions.oss.gradle.plugins.helm.dsl.HelmRegistry
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
+import org.gradle.api.credentials.Credentials
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import java.util.stream.Stream
@@ -26,6 +31,20 @@ internal class RegistryLoginTest {
         login.toString() shouldNotContain "s3cr3t"
         login.toString() shouldContain "ci-user"
         login.toString() shouldContain "registry.example.com"
+    }
+
+    @Test
+    fun `should reject unsupported credentials of a registry`() {
+        val registry = mockk<HelmRegistry> {
+            every { name } returns "custom"
+            every { host.orNull } returns "registry.example.com"
+            every { caFile.orNull } returns null
+            every { configuredCredentials.orNull } returns object : Credentials {}
+        }
+
+        val exception = shouldThrow<IllegalArgumentException> { registry.toRegistryLogin() }
+
+        exception.message shouldBe "Only PasswordCredentials and CertificateCredentials are supported for Helm registries"
     }
 
     @Suppress("UnusedPrivateMember")
