@@ -67,7 +67,7 @@ jobs:
           --no-daemon
 
       - name: Upload plugin files
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: build-output
           if-no-files-found: error
@@ -125,7 +125,7 @@ jobs:
       # 4. Open the file like `helm-plugin/build/reports/tests/functionalTest/index.html`.
       - name: Upload functional test reports
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: functional-test-reports-${{ matrix.os }}-java${{ matrix.java }}
           if-no-files-found: warn
@@ -139,7 +139,7 @@ jobs:
             build/reports/problems/
 
       - name: Upload Kover execution data
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           # Must be unique per job (artifact v4 immutability)
           name: kover-functional-tests-${{ matrix.os }}-java${{ matrix.java }}
